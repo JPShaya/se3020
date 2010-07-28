@@ -1,14 +1,9 @@
 package stockmarket;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
-
-import com.csvreader.CsvReader;
 
 public class Cli { // NOPMD by tom on 7/26/10 9:26 PM
 
