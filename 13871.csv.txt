@@ -1,0 +1,2 @@
+#Instrument,Date,Time,Record Type,L1-Bid Price,L1-Bid Volume,L1-Number of Buyers,L1-Ask Price,L1-Ask Volume,L1-Number of Sellers,L2-Bid Price,L2-Bid Volume,L2-Number of Buyers,L2-Ask Price,L2-Ask Volume,L2-Number of Sellers,L3-Bid Price,L3-Bid Volume,L3-Number of Buyers,L3-Ask Price,L3-Ask Volume,L3-Number of Sellers,L4-Bid Price,L4-Bid Volume,L4-Number of Buyers,L4-Ask Price,L4-Ask Volume,L4-Number of Sellers
+MQG,1-Apr-10,35:00.0,Market Depth,45.83,190,1,49.75,101,1,45,5000,1,49.99,290,1, , , ,51.5,250,1, , , ,54,197,1
