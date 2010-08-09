@@ -1,3 +1,5 @@
+package stockmarket;
+
 /**
  *
  * @author Jean-Paul Jacques <jjac403@cse.unsw.edu.au>

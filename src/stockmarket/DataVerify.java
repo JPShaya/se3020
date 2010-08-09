@@ -1,8 +1,9 @@
+package stockmarket;
+
 
 import java.io.File;
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.StringTokenizer;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -26,82 +27,73 @@ public class DataVerify {
                     flag = true;
                     line = line.substring(1);
                 }
-                StringTokenizer st = new StringTokenizer(line, ",");
+                String[] tokens = line.split(",");
 
-                if(st.countTokens() > TableValues.values().length)
-                    throw new TradeDataException("Unknown extra headers found on line " + lineNum);
-                if(st.countTokens() < TableValues.values().length)
-                        throw new TradeDataException("Insufficient columns of data provided on line " + lineNum);
+                if(tokens.length > TableValues.values().length)
+                    throw new TradeDataException("Unknown extra headers found on line " + lineNum + ": " + line);
+                if(tokens.length < TableValues.values().length)
+                        throw new TradeDataException("Insufficient columns of data provided on line " + lineNum + ": " + line);
 
                 if(flag) {
                     header = new TableValues[11];
-                    int col = 0;
                     boolean[] checked = new boolean[TableValues.values().length];
-                    String token = "";
-                    while(st.hasMoreTokens()) {
+
+                    for(int col = 0; col < tokens.length; col++) {
                         boolean found = false;
-                        token = st.nextToken();
                         for(TableValues v : TableValues.values()) {
-                            if(v.getAttribute().equalsIgnoreCase(token)) {
+                            if(v.getAttribute().equalsIgnoreCase(tokens[col])) {
                                 if(checked[v.ordinal()])
-                                    throw new TradeDataException("Unexpected Repeated Header " + token + " on line " + lineNum);
+                                    throw new TradeDataException("Unexpected Repeated Header " + tokens[col] + " on line " + lineNum);
                                 header[col] = v;
                                 found = true;
 
                             }
                         }
                         if(!found) {
-                            throw new TradeDataException("Unknown Header: " + token + " on line " + lineNum);
+                            throw new TradeDataException("Unknown Header: " + tokens[col] + " on line " + lineNum);
                         }
-                        col++;
                     }
                     continue;
                 }
                 if(header == null)
                     throw new TradeDataException("CSV File Headers undefined.");
-                int col = 0;
-                st.countTokens();
-                while(st.hasMoreTokens()) {
-
-                    String token = st.nextToken();
-
+                for(int col = 0; col < tokens.length; col++) {
                     switch(header[col]) {
                         case SECURITY:
-                            checkSecurity(token, lineNum);
+                            checkSecurity(tokens[col], lineNum);
                             break;
                         case DATE:
-                            checkDate(token, lineNum);
+                            checkDate(tokens[col], lineNum);
                             break;
                         case TIME:
-                            checkDate(token, lineNum);
+                            checkTime(tokens[col], lineNum);
                             break;
                         case STATUS:
-                            checkStatus(token, lineNum);
+                            checkStatus(tokens[col], lineNum);
                             break;
                         case PRICE:
-                            checkPrice(token, lineNum);
+                            checkPrice(tokens[col], lineNum);
                             break;
                         case VOLUME:
-                            checkVolume(token, lineNum);
+                            checkVolume(tokens[col], lineNum);
                             break;
                         case VALUE:
-                            checkValue(token, lineNum);
+                            checkValue(tokens[col], lineNum);
                             break;
                         case TRANS:
-                            checkTrans(token, lineNum);
+                            checkTrans(tokens[col], lineNum);
                             break;
                         case BID:
-                            checkBid(token, lineNum);
+                            checkBid(tokens[col], lineNum);
                             break;
                         case ASK:
-                            checkAsk(token, lineNum);
+                            checkAsk(tokens[col], lineNum);
                             break;
                         case TYPE:
-                            checkType(token, lineNum);
+                            checkType(tokens[col], lineNum);
                             break;
 
                     }
-                    col++;
                 }
 
             }
@@ -116,10 +108,11 @@ public class DataVerify {
         }
 
         public void checkDate(String token, int lineNum) throws TradeDataException {
-            DateFormat df = new SimpleDateFormat("dd-MM-yy");
+            DateFormat df = new SimpleDateFormat("dd-MMM-yy");
             try {
                 df.parse(token);
             } catch(Exception e) {
+                e.printStackTrace();
                 throw new TradeDataException("Unexpected format for DATE on line " + lineNum + ": " + token);
             }
         }
@@ -127,9 +120,9 @@ public class DataVerify {
          public void checkTime(String token, int lineNum) throws TradeDataException {
              DateFormat df = null;
              if(token.length() > 8)
-                 df = new SimpleDateFormat("HH-mm-ss.SSS");
+                 df = new SimpleDateFormat("HH:mm:ss.SSS");
              else
-                 df = new SimpleDateFormat("HH-mm-ss");
+                 df = new SimpleDateFormat("HH:mm:ss");
             try {
                 df.parse(token);
             } catch(Exception e) {
